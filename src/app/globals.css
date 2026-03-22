@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: var(--font-fraunces), serif;
+  --font-sans: "Satoshi", var(--font-inter), sans-serif;
+  
+  --color-brand-orange: #FF6B1A;
+  --color-brand-orange-dark: #E05500;
+  --color-bg-black: #080808;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    @apply bg-bg-black text-white antialiased overflow-x-hidden;
+    cursor: none;
+  }
+
+  h1, h2, h3 {
+    @apply font-serif font-bold;
+  }
+}
+
+@layer components {
+  .dot-grid {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 0);
+    background-size: 28px 28px;
+  }
+
+  .glass {
+    @apply bg-[rgba(255,255,255,0.055)] border border-[rgba(255,255,255,0.11)] backdrop-blur-[24px] saturate-[200%] brightness-[1.1];
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+
+  .glass-hover {
+    @apply transition-all duration-[0.35s] ease-[cubic-bezier(0.25,0.46,0.45,0.94)];
+  }
+
+  .glass-hover:hover {
+    @apply bg-[rgba(255,255,255,0.09)] border-[rgba(255,255,255,0.2)] -translate-y-[5px];
+    box-shadow: 0 8px 40px rgba(255,107,26,0.15);
+  }
+
+  .orb {
+    @apply absolute rounded-full pointer-events-none mix-blend-screen;
+    animation: orbDrift 15s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes orbDrift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(20px, -15px); }
+}
+
+@keyframes pulseOpacity {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.animate-pulse-opacity {
+  animation: pulseOpacity 2s infinite;
+}
+
+/* Hide default cursor on interactive elements too */
+a, button, input, select, textarea {
+  cursor: none !important;
+}
+
+.fast-cursor-dot {
+  --x: 0px;
+  --y: 0px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--color-brand-orange);
+  border-radius: 50%;
+  transform: translate(calc(var(--x) - 3px), calc(var(--y) - 3px));
+  will-change: transform;
+  z-index: 9999;
+  transition: transform 0.02s linear, width 0.2s ease, height 0.2s ease;
+}
+
+.fast-cursor-dot.active {
+  width: 4px;
+  height: 4px;
+  transform: translate(calc(var(--x) - 2px), calc(var(--y) - 2px));
+}
+
+.fast-cursor-ring {
+  --x: 0px;
+  --y: 0px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 107, 26, 0.4);
+  border-radius: 50%;
+  transform: translate(calc(var(--x) - 16px), calc(var(--y) - 16px));
+  will-change: transform;
+  z-index: 9998;
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+}
+
+.fast-cursor-ring.active {
+  width: 48px;
+  height: 48px;
+  transform: translate(calc(var(--x) - 24px), calc(var(--y) - 24px));
+  border-color: var(--color-brand-orange);
+}
